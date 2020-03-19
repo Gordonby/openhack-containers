@@ -1,0 +1,49 @@
+docker network create -d bridge drivingapp
+
+docker pull mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
+docker run --network drivingapp -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=aVMp0ll0PWpadd11" -p 1433:1433 --name sqlDrivingDb3 -d mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
+docker ps
+
+#LOGIN and run SqlCmd
+docker exec -it sqlDrivingDb3 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "aVMp0ll0PWpadd11" 
+
+#Change password command (if you need to)
+ALTER LOGIN SA WITH PASSWORD="aVMp0ll0PWpadd11"
+GO
+
+#Create database
+CREATE DATABASE mydrivingDB
+GO
+
+#Lists all databases
+SELECT name, database_id, create_date FROM sys.databases
+GO
+
+#Enables remote access
+EXEC sp_configure 'remote access', 0 ;
+GO
+RECONFIGURE ;
+GO
+
+#Outside of the container, in windows, this lets you connect in
+sqlcmd -S 10.93.28.10,1433 -U SA -P "aVMp0ll0PWpadd11"
+
+#Populate with data
+docker run --network drivingapp -e SQLFQDN=sqlDrivingDb3 -e SQLUSER=SA -e SQLPASS=aVMp0ll0PWpadd11 -e SQLDB=mydrivingDB openhack/data-load:v1
+
+#test that theres data
+select * from mydrivingDB.dbo.Trips
+
+#change the environment variables
+ENV SQL_USER="sa" \
+    SQL_PASSWORD="aVMp0ll0PWpadd11" \
+    SQL_SERVER="sqlDrivingDb3" \
+    SQL_DBNAME="mydrivingDB" \
+    WEB_PORT=8085 \
+    WEB_SERVER_BASE_URI="http://0.0.0.0" \
+    ASPNETCORE_ENVIRONMENT="Local" \
+    CONFIG_FILES_PATH="/secrets"
+
+#build and run the poi app after updating environment variables
+docker build . -t mylocalpoi:v3
+docker run --network drivingapp -p 8085:8085 mylocalpoi:v3
