@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "user-profile.fullname" . }}
+  labels:
+    {{- include "user-profile.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "user-profile.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "user-profile.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "user-profile.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /api/user/healthcheck
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /api/user/healthcheck
+              port: http
+          env:
+          - name: SQL_USER
+            value: "{{ .Values.sqlConfig.SQL_USER }}"
+          - name: SQL_PASSWORD
+            value: "{{ .Values.sqlConfig.SQL_PASSWORD }}"
+          - name: SQL_SERVER
+            value: "{{ .Values.sqlConfig.SQL_SERVER }}"
+          - name: SQL_DBNAME
+            value: "{{ .Values.sqlConfig.SQL_DBNAME }}"
+          - name: WEB_PORT
+            value: "80"
+          - name: WEB_SERVER_BASE_URI
+            value: "http://0.0.0.0"
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Local"
+          - name: CONFIG_FILES_PATH
+            value: "/kvmnt"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

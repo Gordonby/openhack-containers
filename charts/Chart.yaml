@@ -1,0 +1,10 @@
+apiVersion: v2
+name: tripinsights
+description: The master chart for the TripInsights application
+type: application
+
+# chart version
+version: 0.1.0
+
+# Application Version
+appVersion: 1.16.0

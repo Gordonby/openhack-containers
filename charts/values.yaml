@@ -1,0 +1,41 @@
+#remember - these bad boys override the values in the sub-charts
+
+#this needs to be changed for the external ip for your cluster
+ingressControllerIP: 1.2.3.4 #20.191.41.8  
+
+poi:
+  replicaCount: 2
+
+  sqlConfig:
+    SQL_USER: "readonlyuser"
+    SQL_PASSWORD: "1231!#ASDF!a"
+    SQL_SERVER: "gordonssimplesql.database.windows.net"
+    SQL_DBNAME: "mydrivingDB-2020-3-5-16"
+
+tripviewer:
+  replicaCount: 2
+
+user-profile:
+  sqlConfig:
+    SQL_USER: "readonlyuser"
+    SQL_PASSWORD: "1231!#ASDF!a"
+    SQL_SERVER: "gordonssimplesql.database.windows.net"
+    SQL_DBNAME: "mydrivingDB-2020-3-5-16"
+
+trips:
+  replicaCount: 2
+
+  sqlConfig:
+    SQL_USER: "readonlyuser"
+    SQL_PASSWORD: "1231!#ASDF!a"
+    SQL_SERVER: "gordonssimplesql.database.windows.net"
+    SQL_DBNAME: "mydrivingDB-2020-3-5-16"
+
+user-java:
+  replicaCount: 2
+
+  sqlConfig:
+    SQL_USER: "readonlyuser"
+    SQL_PASSWORD: "1231!#ASDF!a"
+    SQL_SERVER: "gordonssimplesql.database.windows.net"
+    SQL_DBNAME: "mydrivingDB-2020-3-5-16"
