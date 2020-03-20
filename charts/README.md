@@ -1,6 +1,6 @@
 ## Prerequisties
-The TripInsights sql database to connect to.
-Ingress in your cluster (script below)
+1. The TripInsights sql database to connect to.
+1. Ingress in your cluster (script below)
 
 ## Install script
 kubectl create namespace tripinsights
