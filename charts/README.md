@@ -2,7 +2,7 @@
 The TripInsights sql database to connect to.
 Ingress in your cluster (script below)
 
-
+## Install script
 kubectl create namespace tripinsights
 kubectl create namespace tripinsights-ingress
 helm install tripingress stable/nginx-ingress --namespace tripinsights-ingress
