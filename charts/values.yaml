@@ -3,39 +3,37 @@
 #this needs to be changed for the external ip for your cluster
 ingressControllerIP: 1.2.3.4 #20.191.41.8  
 
+global:
+  sqlConfig:
+    SQL_USER: "readonlyuser"
+    SQL_PASSWORD: "1231!#ASDF!a"
+    SQL_SERVER: "gordonssimplesql.database.windows.net"
+    SQL_DBNAME: "mydrivingDB-2020-3-5-16"
+
 poi:
   replicaCount: 2
-
-  sqlConfig:
-    SQL_USER: "readonlyuser"
-    SQL_PASSWORD: "1231!#ASDF!a"
-    SQL_SERVER: "gordonssimplesql.database.windows.net"
-    SQL_DBNAME: "mydrivingDB-2020-3-5-16"
-
-tripviewer:
-  replicaCount: 2
-
-user-profile:
-  sqlConfig:
-    SQL_USER: "readonlyuser"
-    SQL_PASSWORD: "1231!#ASDF!a"
-    SQL_SERVER: "gordonssimplesql.database.windows.net"
-    SQL_DBNAME: "mydrivingDB-2020-3-5-16"
+  
+  service:
+    port: 5001
 
 trips:
   replicaCount: 2
 
-  sqlConfig:
-    SQL_USER: "readonlyuser"
-    SQL_PASSWORD: "1231!#ASDF!a"
-    SQL_SERVER: "gordonssimplesql.database.windows.net"
-    SQL_DBNAME: "mydrivingDB-2020-3-5-16"
+  service:
+    port: 87
 
 user-java:
   replicaCount: 2
 
-  sqlConfig:
-    SQL_USER: "readonlyuser"
-    SQL_PASSWORD: "1231!#ASDF!a"
-    SQL_SERVER: "gordonssimplesql.database.windows.net"
-    SQL_DBNAME: "mydrivingDB-2020-3-5-16"
+  service:
+    port: 88
+
+user-profile:
+  replicaCount: 2
+
+  service:
+    port: 89
+    
+tripviewer:
+  replicaCount: 2
+

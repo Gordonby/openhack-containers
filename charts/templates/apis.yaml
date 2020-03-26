@@ -11,17 +11,17 @@ spec:
       paths:
       - backend:
           serviceName: {{ .Release.Name }}-poi
-          servicePort: 80
+          servicePort: {{ .Values.poi.service.port }}
         path: /api/poi/
       - backend:
           serviceName: {{ .Release.Name }}-trips
-          servicePort: 80
+          servicePort: {{ .Values.trips.service.port }}
         path: /api/trips/
       - backend:
           serviceName: {{ .Release.Name }}-user-java
-          servicePort: 80
+          servicePort: {{ $userjava := index .Values "user-java"}}{{ $userjava.service.port }}
         path: /api/user-java/
       - backend:
           serviceName: {{ .Release.Name }}-user-profile
-          servicePort: 80
+          servicePort: {{ $userprof := index .Values "user-profile"}}{{ $userprof.service.port }}
         path: /api/user/

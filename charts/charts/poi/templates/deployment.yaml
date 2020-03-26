@@ -29,7 +29,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -41,15 +41,15 @@ spec:
               port: http
           env:
           - name: SQL_USER
-            value: "{{ .Values.sqlConfig.SQL_USER }}"
+            value: "{{ .Values.global.sqlConfig.SQL_USER }}"
           - name: SQL_PASSWORD
-            value: "{{ .Values.sqlConfig.SQL_PASSWORD }}"
+            value: "{{ .Values.global.sqlConfig.SQL_PASSWORD }}"
           - name: SQL_SERVER
-            value: "{{ .Values.sqlConfig.SQL_SERVER }}"
+            value: "{{ .Values.global.sqlConfig.SQL_SERVER }}"
           - name: SQL_DBNAME
-            value: "{{ .Values.sqlConfig.SQL_DBNAME }}"
+            value: "{{ .Values.global.sqlConfig.SQL_DBNAME }}"
           - name: WEB_PORT
-            value: "80"
+            value: "{{ .Values.service.port }}"
           - name: WEB_SERVER_BASE_URI
             value: "http://0.0.0.0"
           - name: ASPNETCORE_ENVIRONMENT
